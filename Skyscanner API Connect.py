@@ -1,7 +1,7 @@
 import requests
 import json
 import pprint
-import decimal
+import operator
 
 #CODE WITH INPUTS
 # trip_start_month = input('What month would you like to start your journey? ')
@@ -27,37 +27,14 @@ trip_start_location = input('Airport code for your city: ')
 
 response = requests.get("https://skyscanner-skyscanner-flight-search-v1.p.rapidapi.com/apiservices/browseroutes/v1.0/US/USD/en-US/{}/anywhere/{}?inboundpartialdate={}".format(trip_start_location, trip_start_date, trip_end_date),
   headers={
-    "X-RapidAPI-Key": "85c2cae2d1msh4f45b5e5f5f7ffep19de73jsnf513195c7a59"
-  }
-)
-sum=0
-def_price = 'Could Not Find'
+    "X-RapidAPI-Key": "85c2cae2d1msh4f45b5e5f5f7ffep19de73jsnf513195c7a59"})
 response_text = response.text
 response_data = json.loads(response_text)
-Routes = (response_data['Routes'])
+routes = response_data['Routes']
 routes_with_lowest_price = []
-
 for route in routes:
     if 'QuoteIds' in route:
         routes_with_lowest_price.append(route)
+cheapest_sort = sorted(routes_with_lowest_price, key=lambda i: i['Price'])
 
-pprint.pprint(routes_with_lowest_price)
-
-
-
-# Price = (Deals['Price'])
-# pprint.pprint(Deals)
-list=[]
-# pprint.pprint(price)
-    # print(PriceOfDeal)
-# print(response[4]["price"])
-# for i in range(1,100):
-#     if not response["price"]
-#         print(response['Routes'][i]["price"])
-# sum=0
-# for i in range(1,100):
-#     if (Routes[i]["Price"]):
-#         print()
-#     else:
-#         sum=sum+1
-# print(sum)
+pprint.pprint(cheapest_sort)
